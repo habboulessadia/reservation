@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data >
+
+        <record id="sequence_booking" model="ir.sequence">
+              <field name="name">Booking Order</field>
+              <field name="code">booking.order</field>
+              <field name="active">TRUE</field>
+              <field name="number_next_actual">000001</field>
+              <field name="prefix">RESERV%(range_year)s%(range_month)s%(range_day)s</field>
+              <field name="padding">6</field>
+        </record>
+
+    </data>
+</odoo>

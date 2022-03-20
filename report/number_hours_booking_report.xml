@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_booking_hours_pivot" model="ir.ui.view">
+         <field name="name">booking.hours.report.pivot</field>
+         <field name="model">booking_management.booking</field>
+         <field name="arch" type="xml">
+             <pivot string="Hours Booking Analysis" sample="1">
+                  <field name="booking_date" interval="month"/>
+                 <field name="nb_hours_reservations" />
+                 <field name="duration" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+     <record id="view_booking_hours_graph" model="ir.ui.view">
+         <field name="name">booking.report.hours.graph</field>
+         <field name="model">booking_management.booking</field>
+         <field name="arch" type="xml">
+             <graph string="Number of Hours Booking Analysis by Month" type="line" sample="1">
+                 <field name="booking_date" interval="month"/>
+                 <field name="nb_hours_reservations" />
+             </graph>
+         </field>
+    </record>
+
+
+         <record model="ir.actions.act_window" id="action_booking_report_booking_hours">
+            <field name="name">Number of Hours Bookings Analysis </field>
+            <field name="res_model">booking_management.booking</field>
+            <field name="view_mode">graph,pivot</field>
+            <field name="context" />
+        </record>
+
+        #menu Reporting
+        <menuitem id="my_booking_on_hours_by_month_menu" name="Booking on hours by month" parent="booking_report"
+                  action="action_booking_report_booking_hours" groups="management_booking.group_booking_manager"/>
+
+</odoo>

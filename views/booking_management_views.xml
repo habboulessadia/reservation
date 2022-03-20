@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data >
+
+        <record model="ir.ui.view" id="booking_form_view">
+            <field name="name">booking.form</field>
+            <field name="model">booking_management.booking</field>
+            <field name="arch" type="xml">
+                <form string="Booking Form">
+                    <header>
+                        <button id="btn_new" name="action_new" string="New"  class="btn-primary"
+                                type="object" states="approve,valid,cancel,close"/>
+                        <button id="btn_approved" name="action_approved"  string="Approved"  class="btn-primary"
+                                type="object" states="valid,cancel,close,new"/>
+                        <button id="btn_validated" name="action_validated"  string="Validated"  class="btn-primary"
+                                 type="object" states="new,approve,cancel,close"/>
+                        <button id="btn_canceled" name="action_canceled" string="Canceled" class="btn-primary"
+                                 type="object" states="new,approve,valid,close"/>
+                        <button id="btn_closed" name="action_closed" string="Closed"  class="btn-primary"
+                                 type="object" states="approve,valid,cancel,new"/>
+                        <field name="state" widget="statusbar" nolabel="1"
+                               statusbar_visible="new,approve,valid,cancel,close"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="General">
+                                <field name="client_id"/>
+                                <field name="article_id"/>
+                            </group>
+                            <group string="Schedule">
+                                <field name="booking_date"/>
+                                <field name="duration"/>
+                                <field name="duration_unit"/>
+                            </group>
+                        </group>
+                         <notebook>
+                            <page string="Devis">
+                                <field name="quotation_id">
+                                    <tree string="Devis">
+                                        <field name="origin"/>
+                                        <field name="date_order"/>
+                                        <field name="order_line"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <div class="o_row">
+                                <button name="create_order" states="valid" string="Generate quotation" class="oe_highlight" type="object"
+                                        attrs="{'invisible':[('state','in',('new','approve','cancel','close'))]}"/>
+
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <!-- booking tree/list view -->
+        <record model="ir.ui.view" id="booking_tree_view">
+            <field name="name">booking.tree</field>
+            <field name="model">booking_management.booking</field>
+            <field name="arch" type="xml">
+                    <tree string="Booking Tree" >
+                         <field name="reference"/>
+                         <field name="client_id"/>
+                         <field name="quotation_id"/>
+                         <field name="article_id"/>
+                         <field name="duration"/>
+                         <field name="duration_unit"/>
+                         <field name="state"/>
+                         <field name="booking_date"/>
+                        <field name="end_date"/>
+                    </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="booking_search_view">
+            <field name="name">booking.search</field>
+            <field name="model">booking_management.booking</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="reference"/>
+                    <field name="client_id"/>
+                    <field name="article_id"/>
+                    <field name="booking_date"/>
+                    <filter name="my_booking" string="My booking"
+                            domain="[('client_id', '=', uid)]"/>
+                    <filter name="by_state_new" string="New Booking"
+                            domain="[('state', '=', 'new')]"/>
+                    <filter name="by_state_approved" string="Approved Booking"
+                            domain="[('state', '=', 'approve')]"/>
+                    <filter name="by_state_validated" string="Validated Booking"
+                            domain="[('state', '=', 'valid')]"/>
+                    <filter name="by_state_canceled" string="Canceled Booking"
+                            domain="[('state', '=', 'cancel')]"/>
+                    <filter name="by_state_closed" string="Closed Booking"
+                            domain="[('state', '=', 'close')]"/>
+                    <group string="Group By">
+                        <filter name="by_client" string="Client"
+                                context="{'group_by': 'client_id'}"/>
+                        <filter name="by_article" string="Article"
+                                context="{'group_by': 'article_id'}"/>
+                         <filter name="by_booking_date" string="Booking date"
+                                context="{'group_by': 'booking_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_booking_management_kanban">
+            <field name="name">booking_management.booking.kanban</field>
+            <field name="model">booking_management.booking</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="client_id">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Reference:
+                                    <field name="reference"/>
+                                    <br/>
+                                    Client:
+                                    <field name="client_id"/>
+                                    <br/>
+                                    Article:
+                                    <field name="article_id"/>
+                                    <br/>
+                                    State:
+                                    <field name="state"/>
+                                    <br/>
+                                    booking date:
+                                    <field name="booking_date"/>
+                                    <br/>
+                                    duration:
+                                    <field name="duration"/>
+                                    <br/>
+                                    End date:
+                                    <field name="end_date"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="my_booking_list_action">
+            <field name="name">Bookings</field>
+            <field name="res_model">booking_management.booking</field>
+            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context" eval="{'search_default_my_booking': 1}"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first booking
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="all_booking_list_action">
+            <field name="name">All Bookings</field>
+            <field name="res_model">booking_management.booking</field>
+            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="booking_tree_view"/>
+            <field name="context" />
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first booking
+                </p>
+            </field>
+        </record>
+
+
+        <!-- top level menu: no parent -->
+        <menuitem id="main_booking_management_menu" name="Booking" />
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="booking_management_menu" name="Booking"
+                  parent="main_booking_management_menu" />
+        <!-- the following menuitem should appear *after*
+             its parent openacademy_menu and *after* its
+             action course_list_action -->
+        <menuitem id="my_booking_menu" name="My Booking" parent="booking_management_menu"
+                  action="my_booking_list_action" groups="management_booking.group_booking_user"/>
+        <menuitem id="all_booking_menu" name="All Booking" parent="booking_management_menu"
+                  action="all_booking_list_action" groups="management_booking.group_booking_manager"/>
+        <!-- Full id location:
+             action="openacademy.course_list_action"
+             It is not required when it is the same module -->
+
+    </data>
+</odoo>

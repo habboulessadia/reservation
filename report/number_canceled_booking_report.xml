@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_booking_canceled_pivot" model="ir.ui.view">
+         <field name="name">booking.canceled.report.pivot</field>
+         <field name="model">booking_management.booking</field>
+         <field name="arch" type="xml">
+             <pivot string="Canceled Booking Analysis" sample="1">
+                  <field name="booking_date" interval="month"/>
+                 <field name="nb_reservations_canceled" />
+             </pivot>
+         </field>
+    </record>
+
+     <record id="view_booking_canceled_graph" model="ir.ui.view">
+         <field name="name">booking.report.canceled.graph</field>
+         <field name="model">booking_management.booking</field>
+         <field name="arch" type="xml">
+             <graph string="Number of Canceled Booking Analysis by month" type="line" sample="1">
+                 <field name="booking_date" interval="month"/>
+                 <field name="nb_reservations_canceled" />
+             </graph>
+         </field>
+    </record>
+
+
+         <record model="ir.actions.act_window" id="action_booking_report_booking_canceled">
+            <field name="name">Canceled Bookings Analysis</field>
+            <field name="res_model">booking_management.booking</field>
+            <field name="view_mode">graph,pivot</field>
+           <field name="context">{'search_default_by_state_canceled': 1}</field>
+        </record>
+
+        #menu Reporting
+        <menuitem id="my_booking_canceled_by_month_menu" name="Canceled booking by month" parent="booking_report"
+                  action="action_booking_report_booking_canceled" groups="management_booking.group_booking_manager"/>
+
+</odoo>

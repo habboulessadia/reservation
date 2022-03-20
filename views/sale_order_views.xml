@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+    <!--inherit tree view quotation-->
+    <record id="action_quotations_tree" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree</field>
+            <field name="context">{}
+            </field>
+            <field name="domain">[]</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+              </p><p>
+                Once the quotation is confirmed by the customer, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
+              </p>
+            </field>
+        </record>
+
+    <!--smart button-->
+        <record id="smart_id_sale_order_form"  model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button type="object" name="action_view_reservations" class="oe_stat_button" icon="fa-shopping-cart" >
+                         <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="count_reserv" widget="statinfo" string="Reservation"/>
+                            </span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+     #quotation menu
+        <menuitem id="quotation_tree_menu" name="Quotations" parent="main_booking_management_menu"
+                  action="action_quotations_tree" groups="management_booking.group_booking_manager"/>
+    </odoo>

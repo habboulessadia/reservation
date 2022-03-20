@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data >
+        <record  model="ir.ui.view" id="sale_analyse_quotation_tree_view">
+            <field name="name">Sale.Quotation.Analyse</field>
+            <field name="model">booking_management.booking</field>
+            <field name="arch" type="xml">
+                <tree string="Tree quotation" >
+                    <field name="quotation_id"/>
+                    <field name="quotation_origin"/>
+                    <field name="client_id"/>
+                    <field name="quotation_date"/>
+                </tree>
+            </field>
+        </record>
+
+         <record model="ir.actions.act_window" id="sale_quotation_action">
+            <field name="name">Analyse Quotation Sale</field>
+            <field name="res_model">booking_management.booking</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale_analyse_quotation_tree_view"/>
+            <field name="context" />
+        </record>
+        #menuitem analyses
+        <menuitem id="sales_analyse__quotation_menu" name="Sales" parent="booking_analyse"
+                  action="sale_quotation_action" groups="management_booking.group_booking_manager"/>
+    </data>
+</odoo>
