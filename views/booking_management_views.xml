@@ -176,7 +176,7 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="all_booking_list_action">
+        <record model="ir.actions.act_window" id="show_all_booking_list_action">
             <field name="name">All Bookings</field>
             <field name="res_model">booking_management.booking</field>
             <field name="view_mode">tree</field>
@@ -202,7 +202,7 @@
         <menuitem id="my_booking_menu" name="My Booking" parent="booking_management_menu"
                   action="my_booking_list_action" groups="management_booking.group_booking_user"/>
         <menuitem id="all_booking_menu" name="All Booking" parent="booking_management_menu"
-                  action="all_booking_list_action" groups="management_booking.group_booking_manager"/>
+                  action="show_all_booking_list_action" groups="management_booking.group_booking_manager"/>
         <!-- Full id location:
              action="openacademy.course_list_action"
              It is not required when it is the same module -->
