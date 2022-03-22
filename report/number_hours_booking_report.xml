@@ -7,8 +7,7 @@
          <field name="arch" type="xml">
              <pivot string="Hours Booking Analysis" sample="1">
                   <field name="booking_date" interval="month"/>
-                 <field name="nb_hours_reservations" />
-                 <field name="duration" type="measure"/>
+                 <field name="nb_hours_reservations"  type="measure"/>
              </pivot>
          </field>
     </record>
@@ -19,7 +18,7 @@
          <field name="arch" type="xml">
              <graph string="Number of Hours Booking Analysis by Month" type="line" sample="1">
                  <field name="booking_date" interval="month"/>
-                 <field name="nb_hours_reservations" />
+                 <field name="nb_hours_reservations"  type="measure"/>
              </graph>
          </field>
     </record>

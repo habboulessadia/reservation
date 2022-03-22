@@ -24,11 +24,11 @@ class booking(models.Model):
     quotation_origin = fields.Char(string="origin order",  related='quotation_id.origin')
     ###
     nb_reservations = fields.Integer(string="Number reservations",
-                                     compute='_number_reservation')
-    nb_reservations_canceled = fields.Integer(string="Number reservations canceled",
-                                              compute='_number_reservation_canceled')
+                                     compute='_number_reservation',store=True, compute_sudo=True)
+    nb_reservations_cancel = fields.Integer(string="Number reservations canceled",
+                                              compute='_number_reservation_canceled',store=True, compute_sudo=True)
     nb_hours_reservations = fields.Integer(string="Number of hours reservations",
-                                           compute='_number_reservation_hours')
+                                           compute='_number_reservation_hours',store=True, compute_sudo=True)
 
     @api.model
     def create(self, vals):
@@ -129,26 +129,25 @@ class booking(models.Model):
         self.quotation_id = sales_order_line
 
     def _number_reservation(self):
-        for r in self.ids:
-            self.nb_reservations = len(r.ids)
+        for r in self:
+            r.nb_reservations = len(r.ids)
+        print('2hh')
 
     @api.depends('state')
     def _number_reservation_canceled(self):
-        self.nb_reservations_canceled = 0
-        for r in self.ids:
+        for r in self:
             if r.state == 'cancel':
-                self.nb_reservations_canceled += 1
+                r.nb_reservations_cancel += 1
 
     @api.depends('duration')
     def _number_reservation_hours(self):
-        compute = 0
         for r in self:
             if r.duration_unit == 'hour':
-                compute += r.duration
+                r.nb_hours_reservations += r.duration
             elif r.duration_unit == 'day':
-                compute += r.duration * 24
+                r.nb_hours_reservations += r.duration * 24
             else:
-                compute += r.duration * 30 * 24
-        self.nb_hours_reservations = compute
+                r.nb_hours_reservations += r.duration * 30 * 24
+        print('hhh')
 
 

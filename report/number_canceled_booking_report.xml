@@ -7,7 +7,7 @@
          <field name="arch" type="xml">
              <pivot string="Canceled Booking Analysis" sample="1">
                   <field name="booking_date" interval="month"/>
-                 <field name="nb_reservations_canceled" />
+                  <field name="nb_reservations_cancel" type="measure"/>
              </pivot>
          </field>
     </record>
@@ -18,7 +18,7 @@
          <field name="arch" type="xml">
              <graph string="Number of Canceled Booking Analysis by month" type="line" sample="1">
                  <field name="booking_date" interval="month"/>
-                 <field name="nb_reservations_canceled" />
+                 <field name="nb_reservations_cancel" type="measure"/>
              </graph>
          </field>
     </record>
@@ -28,7 +28,7 @@
             <field name="name">Canceled Bookings Analysis</field>
             <field name="res_model">booking_management.booking</field>
             <field name="view_mode">graph,pivot</field>
-           <field name="context">{'search_default_by_state_canceled': 1}</field>
+           <field name="context">{<!--'search_default_by_state_canceled': 1-->}</field>
         </record>
 
         #menu Reporting
